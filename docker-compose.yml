@@ -1,0 +1,12 @@
+
+services:
+  nginx:
+    build: ./srcs/requirements/nginx
+    ports:
+      # connects localhost:8080  ──►  port 80 (speciified in nginx Dockerfile)
+      - "8080:80"
+
+  mariadb:
+    build: ./srcs/requirements/mariadb
+    
+      
