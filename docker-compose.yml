@@ -1,12 +1,23 @@
+version: "3.9"
 
 services:
+
   nginx:
     build: ./srcs/requirements/nginx
     ports:
       # connects localhost:8080  ──►  port 80 (speciified in nginx Dockerfile)
       - "8080:80"
+    depends_on:
+    # tells Compose to check first if mariadb container has been started
+      - mariadb
 
-  mariadb:
+  mariadb:    
     build: ./srcs/requirements/mariadb
+    
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     
       
