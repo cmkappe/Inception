@@ -71,6 +71,13 @@ TO '${MYSQL_USER}'@'%';
 
 FLUSH PRIVILEGES;
 EOF
+
+# Set the root password for local connections
+mysql -u root -p${MYSQL_ROOT_PASSWORD} << EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+EOF
+
+
     echo "----- SQL finished -----"
     echo "----- Stopping temporary server -----"
 mysqladmin shutdown
