@@ -6,11 +6,13 @@ services:
     build: ./srcs/requirements/nginx
     restart: always
     ports:
-      # connects localhost:8080  ──►  port 80 (speciified in nginx Dockerfile) // TO BE CHANGED to "443:443"
+      # connects localhost:8080  ──►  port 80 (specified in nginx Dockerfile) // TO BE CHANGED to "443:443"
       - "8080:80"
     # tells Compose to check first if wordpress container has been started
     depends_on:
       - wordpress
+    volumes:
+    - wordpress_data:/var/www/html
     networks:
       - inception
 
