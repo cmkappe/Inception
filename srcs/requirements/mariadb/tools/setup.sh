@@ -72,15 +72,21 @@ TO '${MYSQL_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-# Set the root password for local connections
-mysql -u root -p${MYSQL_ROOT_PASSWORD} << EOF
+mysql <<EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 EOF
+# Set the root password for local connections
+# mysql -u root -p${MYSQL_ROOT_PASSWORD} << EOF
 
 
     echo "----- SQL finished -----"
     echo "----- Stopping temporary server -----"
-mysqladmin shutdown
+
+# connect as the mariaDB user & use root password from doocker environment
+mysqladmin \
+    --user=root \
+    --password="${MYSQL_ROOT_PASSWORD}" \
+    shutdown
 
 fi
 echo "----- Starting final MariaDB -----"
