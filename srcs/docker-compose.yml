@@ -27,25 +27,24 @@ services:
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_HOST: mariadb
 
       DOMAIN_NAME: ${DOMAIN_NAME}
 
       WP_ADMIN_USER: ${WP_ADMIN_USER}
-      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
 
       WP_SECOND_USER: ${WP_SECOND_USER}
-      WP_SECOND_PASSWORD: ${WP_SECOND_PASSWORD}
       WP_SECOND_EMAIL: ${WP_SECOND_EMAIL}
 
+    secrets:
+      - db_password
+      - wp_admin_password
+      - wp_second_password
     depends_on:
       - mariadb
-
     volumes:
       - wordpress_data:/var/www/html
-
     networks:
       - inception
 
@@ -54,13 +53,12 @@ services:
     build: ./requirements/mariadb
     image: mariadb:1.0
     restart: always
-    
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-
+    secrets:
+      - db_root_password
+      - db_password
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -83,3 +81,13 @@ volumes:
 
 networks:
   inception:
+
+secrets:
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+  db_password:
+    file: ./secrets/db_password.txt
+  wp_admin_password:
+    file: ./secrets/wp_admin_password.txt
+  wp_second_password:
+    file: ./secrets/wp_second_password.txt

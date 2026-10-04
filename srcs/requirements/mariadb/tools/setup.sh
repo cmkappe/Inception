@@ -27,6 +27,12 @@
 # "If anything fails, stop immediately."
 set -e
 
+# Docker mounts secrets as files under /run/secrets/
+# Read the password values from those files into shell variables
+# so the setup script can use them when creating the database/user
+MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+
 echo "MariaDB setup script started"
 
 # mkdir -p /run/mysqld /var/lib/mysql

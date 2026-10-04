@@ -25,6 +25,14 @@
 # "If anything fails, stop immediately."
 set -e
 
+# Docker mounts secrets as files under /run/secrets/
+# Read the password values from those files into shell variables
+# so the setup script can use them when installing WordPress
+# and creating the second user.
+MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+WP_SECOND_PASSWORD=$(cat /run/secrets/wp_second_password)
+
 echo "WordPress setup started"
 
 WORDPRESS_PATH="/var/www/html"
@@ -95,8 +103,7 @@ if [ ! -f "$WORDPRESS_PATH/wp-config.php" ] || [ ! -f "$WORDPRESS_PATH/index.php
     #
     # wp-config-sample.php
     #
-    # We copy it and replace placeholders
-    # with our Docker environment variables
+    # We copy it and replace placeholders with the database values provided by Docker (eg passwords live in secrets)
     cp wp-config-sample.php wp-config.php
 
 
@@ -109,8 +116,7 @@ if [ ! -f "$WORDPRESS_PATH/wp-config.php" ] || [ ! -f "$WORDPRESS_PATH/index.php
     #          ▼
     # wordpress
     #
-    # The backticks are escaped because the variables
-    # are inserted into SQL/PHP configuration text.
+    # Replace the database placeholders with the values provided through the Docker environment
     sed -i "s/database_name_here/${MYSQL_DATABASE}/" wp-config.php
 
     sed -i "s/username_here/${MYSQL_USER}/" wp-config.php
