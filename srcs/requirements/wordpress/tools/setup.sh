@@ -139,6 +139,22 @@ if [ ! -f "$WORDPRESS_PATH/wp-config.php" ] || [ ! -f "$WORDPRESS_PATH/index.php
 
 fi
 
+# runtime readiness check
+# keep asking MariaDB "are you alive and accepting connections?" until it says yes
+echo "Waiting for MariaDB..."
+
+# --silent suppresses normal successful output ("mysqld is alive")
+until mysqladmin ping \
+    -h"$MYSQL_HOST" \
+    -u"$MYSQL_USER" \
+    -p"$MYSQL_PASSWORD" \
+    --silent; do
+    sleep 1
+done
+
+echo "MariaDB is ready."
+
+
 # Check if wordpress is actually installed
 # 
 # wp-config.php existing only means that wordpress has been configured to connect to MariaDB
