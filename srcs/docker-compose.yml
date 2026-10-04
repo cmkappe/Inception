@@ -3,7 +3,7 @@
 services:
 
   nginx:
-    build: ./srcs/requirements/nginx
+    build: ./requirements/nginx
     restart: always
     ports:
       # connects localhost:8080  ──►  port 80 (specified in nginx Dockerfile) // TO BE CHANGED to "443:443"
@@ -17,7 +17,7 @@ services:
       - inception
 
   wordpress:
-    build: ./srcs/requirements/wordpress
+    build: ./requirements/wordpress
     restart: always
 
     environment:
@@ -25,6 +25,8 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_HOST: mariadb
+
+      DOMAIN_NAME: ${DOMAIN_NAME}
 
       WP_ADMIN_USER: ${WP_ADMIN_USER}
       WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
@@ -45,7 +47,7 @@ services:
 
 
   mariadb:    
-    build: ./srcs/requirements/mariadb
+    build: ./requirements/mariadb
     restart: always
     
     environment:
