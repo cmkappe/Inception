@@ -7,7 +7,7 @@ services:
     restart: always
     ports:
       # connects localhost:8080  ──►  port 80 (specified in nginx Dockerfile) // TO BE CHANGED to "443:443"
-      - "8080:80"
+      - "443:443"
     # tells Compose to check first if wordpress container has been started
     depends_on:
       - wordpress
