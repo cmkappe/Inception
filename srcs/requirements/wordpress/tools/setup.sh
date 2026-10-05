@@ -33,6 +33,11 @@ MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
 WP_SECOND_PASSWORD=$(cat /run/secrets/wp_second_password)
 
+if [ -z "$WP_ADMIN_PASSWORD" ] || [ -z "$WP_SECOND_PASSWORD" ]; then
+    echo "ERROR: Wordpress passwords must not be empty."
+    exit 1
+fi
+
 echo "WordPress setup started"
 
 WORDPRESS_PATH="/var/www/html"
