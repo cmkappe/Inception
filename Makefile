@@ -22,6 +22,21 @@ logs:
 ps:
 	docker compose -f $(COMPOSE_FILE) ps
 
+secrets:
+	@mkdir -p srcs/secrets
+	@bash -c '\
+		umask 077; \
+		read -r -s -p "MariaDB root password: " DB_ROOT; echo; \
+		read -r -s -p "MariaDB user password: " DB_PASSWORD; echo; \
+		read -r -s -p "WordPress admin password: " WP_ADMIN; echo; \
+		read -r -s -p "WordPress second user password: " WP_SECOND; echo; \
+		printf "%s" "$$DB_ROOT" > srcs/secrets/db_root_password.txt; \
+		printf "%s" "$$DB_PASSWORD" > srcs/secrets/db_password.txt; \
+		printf "%s" "$$WP_ADMIN" > srcs/secrets/wp_admin_password.txt; \
+		printf "%s" "$$WP_SECOND" > srcs/secrets/wp_second_password.txt; \
+		echo "Docker secrets created." \
+	'
+	
 fclean:
 	docker compose -f $(COMPOSE_FILE) down --rmi all --volumes
 
@@ -30,7 +45,7 @@ re:
 	$(MAKE) build
 	$(MAKE) up
 
-.PHONY: all build up down restart logs ps clean fclean re
+.PHONY: all build up down restart logs ps secrets fclean re
 
 # Command		Purpose
 # make			Build/start the infrastructure
