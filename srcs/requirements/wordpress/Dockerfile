@@ -1,10 +1,10 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
 RUN apt-get update && \
     apt-get install -y \
-    php7.4 \
-    php7.4-fpm \
-    php7.4-mysql \
+    php8.2 \
+    php8.2-fpm \
+    php8.2-mysql \
     mariadb-client \
     curl \
     wget \
@@ -14,7 +14,7 @@ RUN apt-get update && \
 # PHP-FPM normally listens on a Unix socket but
 # nginx is running in a separate container, so like this it's 
 # using TCP port 9000 for communication between the containers    
-RUN sed -i 's|^listen = .*|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf
+RUN sed -i 's|^listen = .*|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
 
 
 # while building wordpress image, download and install WP-CLI program

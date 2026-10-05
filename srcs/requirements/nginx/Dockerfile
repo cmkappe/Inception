@@ -1,12 +1,10 @@
 
 # pulls from Docker Hub
-FROM debian:bullseye
+FROM debian:bookworm
 
-# Use a fixed Debian security snapshot because the live Bullseye
-# security repository no longer contains some package versions
-# referenced by this Debian image.
-RUN sed -i 's|^deb http://deb.debian.org/debian-security bullseye-security main|deb http://snapshot.debian.org/archive/debian-security/20260713T000000Z bullseye-security main|' /etc/apt/sources.list && \
-    apt-get -o Acquire::Check-Valid-Until=false update && \
+# Update the package list, install nginx and OpenSSL,
+# then remove the cached package lists to keep the image smaller.
+RUN apt-get update && \
     apt-get install -y nginx openssl && \
     rm -rf /var/lib/apt/lists/*
 

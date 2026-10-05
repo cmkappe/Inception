@@ -224,4 +224,4 @@ echo "Starting PHP-FPM..."
 #  └── php-fpm
 #
 # -F = foreground mode
-exec php-fpm7.4 -F
+exec php-fpm8.2 -F
