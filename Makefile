@@ -36,7 +36,15 @@ secrets:
 		printf "%s" "$$WP_SECOND" > srcs/secrets/wp_second_password.txt; \
 		echo "Docker secrets created." \
 	'
-	
+volumes:
+	docker volume ls
+	docker volume inspect srcs_mariadb_data
+	docker volume inspect srcs_wordpress_data
+
+tls:
+	docker exec srcs-nginx-1 nginx -T 2>&1 | grep ssl_protocols
+	docker exec srcs-nginx-1 nginx -T 2>&1 | grep -E 'ssl_certificate|ssl_certificate_key'
+
 fclean:
 	docker compose -f $(COMPOSE_FILE) down --rmi all --volumes
 
@@ -45,7 +53,7 @@ re:
 	$(MAKE) build
 	$(MAKE) up
 
-.PHONY: all build up down restart logs ps secrets fclean re
+.PHONY: all build up down restart logs ps volumes tls secrets fclean re
 
 # Command		Purpose
 # make			Build/start the infrastructure
