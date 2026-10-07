@@ -238,6 +238,10 @@ make down       # Stop and remove the containers and network
 make restart    # Restart the infrastructure
 make logs       # Display container logs
 make ps         # Display container status
+make volumes    # Inspect Docker volumes and their data paths
+make tls        # Check TLS configuration
+make check      # Run the main project checks
+make db-check   # Check the MariaDB database and users
 make fclean     # Remove containers, images and Docker volume objects
 make re         # Full rebuild
 ```
