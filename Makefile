@@ -46,6 +46,29 @@ tls:
 	$(SUDO) docker exec srcs-nginx-1 nginx -T 2>&1 | grep ssl_protocols
 	$(SUDO) docker exec srcs-nginx-1 nginx -T 2>&1 | grep -E 'ssl_certificate|ssl_certificate_key'
 
+check:
+	@echo "=== Container status ==="
+	@$(MAKE) ps
+	@echo ""
+	@echo "=== HTTPS ==="
+	@curl -k -I --max-time 5 https://ckappe.42.fr
+	@echo ""
+	@echo "=== HTTP (should fail) ==="
+	@curl -I --max-time 5 http://ckappe.42.fr || true
+	@echo ""
+	@echo "=== Volumes ==="
+	@$(MAKE) volumes
+	@echo ""
+	@echo "=== TLS ==="
+	@$(MAKE) tls
+	@echo ""
+	@echo "=== Network ==="
+	$(SUDO) @docker network inspect srcs_inception
+
+db-check:
+	$(SUDO) @docker exec srcs-mariadb-1 mariadb -u root -p -e \
+	"SHOW DATABASES; USE wordpress; SHOW TABLES; SELECT User, Host FROM mysql.user;"
+
 fclean:
 	$(SUDO) docker compose -f $(COMPOSE_FILE) down --rmi all --volumes
 
@@ -54,7 +77,7 @@ re:
 	$(MAKE) build
 	$(MAKE) up
 
-.PHONY: all build up down restart logs ps volumes tls secrets fclean re
+.PHONY: all build up down restart logs ps volumes tls check db-check secrets fclean re
 
 # Command		Purpose
 # make			Build/start the infrastructure
