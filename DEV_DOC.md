@@ -206,6 +206,42 @@ docker compose -f srcs/docker-compose.yml logs -f mariadb
 
 Press `Ctrl+C` to stop following the logs.
 
+### Volumes
+
+List the Docker volumes and inspect the two project volumes:
+```bash
+make volumes
+```
+
+### TLS
+
+Check the NGINX TLS configuration:
+```bash
+make tls
+```
+
+### Project Checks
+
+Run the main project verification checks:
+```bash
+make check
+```
+This checks:
+
+container status
+HTTPS availability
+HTTP behavior
+Docker volume configuration
+TLS configuration
+Docker network configuration
+
+### Database Checks
+
+Inspect the MariaDB database, tables, and users:
+```bash
+make db-check
+```
+
 ### Clean rebuild
 
 Remove the Compose containers, images, and Docker volume objects, then rebuild and start:
