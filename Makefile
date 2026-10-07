@@ -63,10 +63,10 @@ check:
 	@$(MAKE) tls
 	@echo ""
 	@echo "=== Network ==="
-	@docker network inspect srcs_inception
+	@$(SUDO) docker network inspect srcs_inception
 
 db-check:
-	@docker exec srcs-mariadb-1 mariadb -u root -p -e \
+	@$(SUDO) docker exec srcs-mariadb-1 mariadb -u root -p -e \
 	"SHOW DATABASES; USE wordpress; SHOW TABLES; SELECT User, Host FROM mysql.user;"
 
 fclean:
