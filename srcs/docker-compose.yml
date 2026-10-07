@@ -9,7 +9,7 @@ services:
     image: nginx:1.0
     restart: always
     ports:
-      # connects localhost:8080  ──►  port 80 (specified in nginx Dockerfile) // TO BE CHANGED to "443:443"
+      # connects to host port (only outside connection)
       - "443:443"
     # tells Compose to check first if wordpress container has been started
     depends_on:
