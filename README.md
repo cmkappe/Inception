@@ -209,6 +209,10 @@ make up
 make ps
 ```
 
+The Makefile runs Docker commands with `sudo` automatically, so just use
+commands like `make up` and `make down` as usual. `make secrets` does not use
+`sudo`; it creates the password files as your current user.
+
 
 ### Accessing WordPress
 

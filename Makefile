@@ -1,26 +1,27 @@
 NAME = inception
 COMPOSE_FILE = srcs/docker-compose.yml
+SUDO ?= sudo
 
 all: up
 
 build:
-	docker compose -f $(COMPOSE_FILE) build
+	$(SUDO) docker compose -f $(COMPOSE_FILE) build
 
 up:
-	docker compose -f $(COMPOSE_FILE) up -d
+	$(SUDO) docker compose -f $(COMPOSE_FILE) up -d
 
 down:
-	docker compose -f $(COMPOSE_FILE) down
+	$(SUDO) docker compose -f $(COMPOSE_FILE) down
 
 restart:
-	docker compose -f $(COMPOSE_FILE) down
-	docker compose -f $(COMPOSE_FILE) up -d
+	$(SUDO) docker compose -f $(COMPOSE_FILE) down
+	$(SUDO) docker compose -f $(COMPOSE_FILE) up -d
 
 logs:
-	docker compose -f $(COMPOSE_FILE) logs
+	$(SUDO) docker compose -f $(COMPOSE_FILE) logs
 
 ps:
-	docker compose -f $(COMPOSE_FILE) ps
+	$(SUDO) docker compose -f $(COMPOSE_FILE) ps
 
 secrets:
 	@mkdir -p srcs/secrets
@@ -37,16 +38,16 @@ secrets:
 		echo "Docker secrets created." \
 	'
 volumes:
-	docker volume ls
-	docker volume inspect srcs_mariadb_data
-	docker volume inspect srcs_wordpress_data
+	$(SUDO) docker volume ls
+	$(SUDO) docker volume inspect srcs_mariadb_data
+	$(SUDO) docker volume inspect srcs_wordpress_data
 
 tls:
-	docker exec srcs-nginx-1 nginx -T 2>&1 | grep ssl_protocols
-	docker exec srcs-nginx-1 nginx -T 2>&1 | grep -E 'ssl_certificate|ssl_certificate_key'
+	$(SUDO) docker exec srcs-nginx-1 nginx -T 2>&1 | grep ssl_protocols
+	$(SUDO) docker exec srcs-nginx-1 nginx -T 2>&1 | grep -E 'ssl_certificate|ssl_certificate_key'
 
 fclean:
-	docker compose -f $(COMPOSE_FILE) down --rmi all --volumes
+	$(SUDO) docker compose -f $(COMPOSE_FILE) down --rmi all --volumes
 
 re:
 	$(MAKE) fclean
